@@ -1,0 +1,10 @@
+requests
+beautifulsoup4
+yfinance
+transformers
+scikit-learn
+pandas
+numpy
+xgboost
+streamlit
+matplotlib
