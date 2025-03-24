@@ -6,12 +6,12 @@ import time
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-def scrape_yahoo_finance(stock_symbol, max_headlines=10):
+def scrape_yahoo_finance(stock_symbol, max_headlines=20):
     """
     Python web scraper to scrape data from Yahoo Finance.
 
     param stock_symbol: String of a stock symbol to scrape data for.
-    param max_headlines: Maximum number of headlines to scrape (default is 10).
+    param max_headlines: Maximum number of headlines to scrape (default is 20).
     return: List of headlines from the respective Yahoo Finance website for the stock.
     """
     url = f"https://finance.yahoo.com/quote/{stock_symbol}/news"
@@ -28,7 +28,8 @@ def scrape_yahoo_finance(stock_symbol, max_headlines=10):
         
         for item in soup.find_all("h3", limit=max_headlines):
             headline = item.text.strip()
-            headlines.append(headline)
+            if len(headline) > 10 and not headline.lower() in ["news", "life", "entertainment", "finance", "sports", "new on yahoo"]:
+                headlines.append(headline)
         
         if not headlines:
             logging.warning("No headlines found. The website structure might have changed.")
@@ -44,4 +45,4 @@ if __name__ == "__main__":
     logging.info(f"Scraping news for stock: {stock_symbol}")
     news = scrape_yahoo_finance(stock_symbol)
     print(news)
-    time.sleep(1)  # Respectful delay between requests
+    time.sleep(1) # Sleep for 1 second before exiting
